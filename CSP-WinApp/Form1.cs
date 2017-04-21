@@ -61,5 +61,10 @@ namespace CSP_WinApp
                 parts.Add(rectangle);
             }
         }
+
+        private void InitializePopulation()
+        {
+
+        }
     }
 }
