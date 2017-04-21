@@ -14,6 +14,7 @@ namespace CSP_WinApp
     {
         List<Coordinate> inputList;
         List<Rectangle> parts;
+        List<Individual> population;
 
         public Form1()
         {
@@ -25,11 +26,14 @@ namespace CSP_WinApp
         {
             inputList = new List<Coordinate>();
             parts = new List<Rectangle>();
+            population = new List<Individual>();
         }
 
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
             GetFromDataGridView();
+            CreateRetangles();
+            InitializePopulation();
         }
 
         private void GetFromDataGridView()
@@ -52,19 +56,29 @@ namespace CSP_WinApp
         {
             foreach (var part in inputList)
             {
-                Rectangle rectangle = new Rectangle();
-                rectangle.X = 0;
-                rectangle.Y = 0;
-                rectangle.Width = part.Width;
-                rectangle.Length = part.Length;
-                rectangle.Orientation = '0'; // Horizontal by default
+                Rectangle rectangle = new Rectangle(0, 0, part.Width, part.Length, 0);
                 parts.Add(rectangle);
             }
         }
 
         private void InitializePopulation()
         {
-
+            Individual individual = new Individual();
+            foreach (var part in parts)
+            {
+                individual.Chromosome.Add(part.X);
+                individual.Chromosome.Add(part.Y);
+                individual.Chromosome.Add(part.Orientation);
+            }
+            return;
         }
+
+        //private int CalculateFitness(Rectangle rect1, Rectangle rect2)
+        //{
+        //    System.Drawing.Rectangle drawRect1 = new System.Drawing.Rectangle(rect1.X, rect1.Y, rect1.Width, rect1.Length);
+        //    System.Drawing.Rectangle drawRect2 = new System.Drawing.Rectangle(rect2.X, rect2.Y, rect2.Width, rect2.Length);
+        //    System.Drawing.Rectangle intersectArea = System.Drawing.Rectangle.Intersect(drawRect1, drawRect2);
+        //    return intersectArea.Width * intersectArea.Height;
+        //}
     }
 }
