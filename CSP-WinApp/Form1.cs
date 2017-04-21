@@ -32,7 +32,7 @@ namespace CSP_WinApp
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
             GetFromDataGridView();
-            CreateRetangles();
+            parts = CreateRectangles(inputList);
             InitializePopulation();
         }
 
@@ -52,25 +52,30 @@ namespace CSP_WinApp
             }
         }
         
-        private void CreateRetangles()
+        public static List<Rectangle> CreateRectangles(List<Coordinate> coordinates)
         {
-            foreach (var part in inputList)
+            List<Rectangle> rectangles = new List<Rectangle>();
+            foreach (var part in coordinates)
             {
-                Rectangle rectangle = new Rectangle(0, 0, part.Width, part.Length, 0);
-                parts.Add(rectangle);
+                for (int i = 0; i < part.Count; i++)
+                {
+                    Rectangle rectangle = new Rectangle(0, 0, part.Width, part.Length, 0);
+                    rectangles.Add(rectangle);
+                }
             }
+            return rectangles;
         }
 
         private void InitializePopulation()
         {
-            Individual individual = new Individual();
             foreach (var part in parts)
             {
+                Individual individual = new Individual();
                 individual.Chromosome.Add(part.X);
                 individual.Chromosome.Add(part.Y);
                 individual.Chromosome.Add(part.Orientation);
+                population.Add(individual);
             }
-            return;
         }
 
         //private int CalculateFitness(Rectangle rect1, Rectangle rect2)

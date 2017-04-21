@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSP_WinApp
 {
-    class Rectangle
+    public class Rectangle
     {
         private int x;
         private int y;

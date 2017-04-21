@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSP_WinApp
 {
-    class Coordinate
+    public class Coordinate
     {
         private int width;
         private int length;
