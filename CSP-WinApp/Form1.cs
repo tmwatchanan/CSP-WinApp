@@ -12,7 +12,6 @@ namespace CSP_WinApp
 {
     public partial class Form1 : Form
     {
-        const int POPULATION_SIZE = 10;
         int individualSize;
 
         int materialWidth;
@@ -98,29 +97,24 @@ namespace CSP_WinApp
             parts = CreateRectangles(inputList);
 
             InitializePopulation();
-            GA.Crossover(population);
+            GA.Crossover(population, GA.GENE_SIZE);
         }
 
         private void InitializePopulation()
         {
-            labelPopulation.Text = "[GEN1]";
-            foreach (var part in parts)
+            for (int i = 0; i < GA.POPULATION_SIZE; i++)
             {
-                Individual individual = new Individual();
-                individual.X = part.X;
-                individual.Y = part.Y;
-                individual.Orientation = part.Orientation;
-                individual.Width = part.Width;
-                individual.Length = part.Length;
-                population.AddIndividual(individual);
+                Chromosome chromosome = new Chromosome();
+                foreach (var part in parts)
+                {
+                    chromosome.AddGene(part.X, part.Y, part.Orientation, part.Width, part.Length);
+                }
+                GA.GENE_SIZE = chromosome.GetSize();
+                chromosome.RandomAllGenes(materialWidth, materialLength);
+                chromosome.CalculateFitness(materialWidth, materialLength);
+                population.AddChromosome(chromosome);
             }
-            population.RandomAllIndividuals(materialWidth, materialLength);
-            population.CalculateFitness(materialWidth, materialLength);
             population.SortByFitness();
-            foreach (var individual in population.Individuals)
-            {
-                labelPopulation.Text += individual.X + "," + individual.Y + " | ";
-            }
         }
     }
 }

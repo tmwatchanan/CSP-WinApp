@@ -53,7 +53,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GA.cs" />
-    <Compile Include="Individual.cs" />
+    <Compile Include="Gene.cs" />
+    <Compile Include="Chromosome.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
