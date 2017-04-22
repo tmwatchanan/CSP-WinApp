@@ -97,7 +97,13 @@ namespace CSP_WinApp
             parts = CreateRectangles(inputList);
 
             InitializePopulation();
-            GA.Crossover(population, GA.GENE_SIZE);
+            for (int gen = 0; gen < GA.MAX_GENERATION; gen++)
+            {
+                Population firstHalf = GA.GetFirstHalfPopulation(population, GA.ELITISM_SIZE);
+                Population secondHalf = GA.GetSecondHalfPopulation(population, GA.ELITISM_SIZE);
+                GA.Crossover(population, GA.GENE_SIZE);
+                GA.Mutation(population);
+            }
         }
 
         private void InitializePopulation()

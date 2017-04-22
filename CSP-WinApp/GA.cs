@@ -8,7 +8,10 @@ namespace CSP_WinApp
 {
     static class GA
     {
+        public const int MAX_GENERATION = 1000;
         public const int POPULATION_SIZE = 50;
+        public const double ELITISM_RATE = 0.5; // 50% of population size
+        public const int ELITISM_SIZE = (int)(ELITISM_RATE * POPULATION_SIZE);
         public const int MUTATION_RATE = 20; // 20% from 100%
         public static int GENE_SIZE = 0;
 
@@ -107,6 +110,27 @@ namespace CSP_WinApp
                     population.Chromosomes[i].Genes[g].Orientation = Convert.ToInt32(oStrBuilder.ToString());
                 }
             }
+        }
+        public static Population GetFirstHalfPopulation(Population population, int half = -99)
+        {
+            if (half == -99) half = (int)(population.Chromosomes.Count / 2);
+            Population firstHalf = new Population();
+            for (int i = 0; i < half; i++)
+            {
+                firstHalf.AddChromosome(population.Chromosomes[i]);
+            }
+            return firstHalf;
+        }
+        public static Population GetSecondHalfPopulation(Population population, int half = -99)
+        {
+            int popSize = population.Chromosomes.Count;
+            if (half == -99) half = (int)(popSize / 2);
+            Population secondHalf = new Population();
+            for (int i = half; i < popSize; i++)
+            {
+                secondHalf.AddChromosome(population.Chromosomes[i]);
+            }
+            return secondHalf;
         }
     }
 }
