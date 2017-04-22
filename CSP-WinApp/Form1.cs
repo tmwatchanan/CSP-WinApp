@@ -38,6 +38,11 @@ namespace CSP_WinApp
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
             PerformGA();
+            DisplayForm displayForm = new DisplayForm();
+            displayForm.Width = (DisplayForm.SCALING_FACTOR * materialWidth) + DisplayForm.RESERVE_BORDER;
+            displayForm.Height = (DisplayForm.SCALING_FACTOR * materialLength) + DisplayForm.RESERVE_BORDER;
+            displayForm.Show();
+            displayForm.DrawMaterial((DisplayForm.SCALING_FACTOR * materialWidth), (DisplayForm.SCALING_FACTOR * materialLength));
         }
 
         private void GetMaterialSizeFromForm()

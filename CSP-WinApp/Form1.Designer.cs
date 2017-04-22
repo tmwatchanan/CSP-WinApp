@@ -57,6 +57,7 @@
             this.TextBoxMaterialWidth.Name = "TextBoxMaterialWidth";
             this.TextBoxMaterialWidth.Size = new System.Drawing.Size(46, 20);
             this.TextBoxMaterialWidth.TabIndex = 1;
+            this.TextBoxMaterialWidth.Text = "50";
             // 
             // label2
             // 
@@ -73,6 +74,7 @@
             this.TextBoxMaterialLength.Name = "TextBoxMaterialLength";
             this.TextBoxMaterialLength.Size = new System.Drawing.Size(46, 20);
             this.TextBoxMaterialLength.TabIndex = 3;
+            this.TextBoxMaterialLength.Text = "50";
             // 
             // buttonSubmit
             // 
