@@ -37,8 +37,9 @@
             this.PartWidth = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PartLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PartCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.labelPopulation = new System.Windows.Forms.Label();
+            this.dataGridViewPopulation = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewParts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPopulation)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -112,21 +113,20 @@
             this.PartCount.HeaderText = "#Part";
             this.PartCount.Name = "PartCount";
             // 
-            // labelPopulation
+            // dataGridViewPopulation
             // 
-            this.labelPopulation.AutoSize = true;
-            this.labelPopulation.Location = new System.Drawing.Point(12, 222);
-            this.labelPopulation.Name = "labelPopulation";
-            this.labelPopulation.Size = new System.Drawing.Size(56, 13);
-            this.labelPopulation.TabIndex = 6;
-            this.labelPopulation.Text = "population";
+            this.dataGridViewPopulation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewPopulation.Location = new System.Drawing.Point(13, 213);
+            this.dataGridViewPopulation.Name = "dataGridViewPopulation";
+            this.dataGridViewPopulation.Size = new System.Drawing.Size(514, 294);
+            this.dataGridViewPopulation.TabIndex = 6;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 297);
-            this.Controls.Add(this.labelPopulation);
+            this.ClientSize = new System.Drawing.Size(563, 519);
+            this.Controls.Add(this.dataGridViewPopulation);
             this.Controls.Add(this.dataGridViewParts);
             this.Controls.Add(this.buttonSubmit);
             this.Controls.Add(this.TextBoxMaterialLength);
@@ -136,6 +136,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewParts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPopulation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -152,7 +153,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn PartWidth;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartLength;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartCount;
-        private System.Windows.Forms.Label labelPopulation;
+        private System.Windows.Forms.DataGridView dataGridViewPopulation;
     }
 }
 

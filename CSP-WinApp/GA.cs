@@ -10,10 +10,11 @@ namespace CSP_WinApp
     {
         public const int MAX_GENERATION = 1000;
         public const int POPULATION_SIZE = 50;
-        public const double ELITISM_RATE = 0.5; // 50% of population size
+        public const double ELITISM_RATE = 0.3; // % of population size
         public const int ELITISM_SIZE = (int)(ELITISM_RATE * POPULATION_SIZE);
         public const int MUTATION_RATE = 20; // 20% from 100%
         public static int GENE_SIZE = 0;
+        public static int LAST_GENERATION = 1;
 
         public static string Encode(int value, int len)
         {
@@ -25,12 +26,10 @@ namespace CSP_WinApp
         {
             for (int g = 0; g < GA.GENE_SIZE; g++)
             {
-                for (int i = 0; i < population.GetSize(); i++)
+                for (int i = 0; i < (population.GetSize() % 2 == 0 ? population.GetSize() : population.GetSize() - 1); i += 2)
                 {
-                    for (int j = i; j < population.GetSize(); j++)
-                    {
                         Gene gene1 = population.Chromosomes[i].Genes[g];
-                        Gene gene2 = population.Chromosomes[j].Genes[g];
+                        Gene gene2 = population.Chromosomes[i + 1].Genes[g];
 
                         string binary1 = "";
                         string binary2 = "";
@@ -53,12 +52,11 @@ namespace CSP_WinApp
                             //}
                             Random rand = new Random(Guid.NewGuid().GetHashCode());
                             int crossPosition = rand.Next(GA.GENE_SIZE);
-                            string firstHalf = binary1.Substring(crossPosition, binary1.Length);
-                            string secondHalf = binary2.Substring(crossPosition, binary2.Length);
+                            string firstHalf = binary1.Substring(crossPosition, binary1.Length - crossPosition);
+                            string secondHalf = binary2.Substring(crossPosition, binary2.Length - crossPosition);
                             binary1 = binary1.Substring(0, crossPosition) + secondHalf;
                             binary2 = binary2.Substring(0, crossPosition) + firstHalf;
                         }
-                    }
                 }
             }
         }
@@ -131,6 +129,16 @@ namespace CSP_WinApp
                 secondHalf.AddChromosome(population.Chromosomes[i]);
             }
             return secondHalf;
+        }
+
+        public static Population CombineFirstAndSecondPopulation(Population firstHalf, Population secondHalf)
+        {
+            Population population = firstHalf;
+            foreach (var chromosome in secondHalf.Chromosomes)
+            {
+                population.AddChromosome(chromosome);
+            }
+            return population;
         }
     }
 }

@@ -90,6 +90,29 @@ namespace CSP_WinApp
             return rectangles;
         }
 
+        private void ShowPopulationInForm()
+        {
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("GEN#");
+            dataTable.Columns.Add("Chromosome");
+
+            DataRow dataRow;
+            foreach (var chromosome in population.Chromosomes)
+            {
+                dataRow = dataTable.NewRow();
+                dataRow[0] = GA.LAST_GENERATION.ToString();
+                string chromosomeString = "{" + chromosome.Fitness + "}";
+                for (int i = 0; i < chromosome.Genes.Count; i++)
+                {
+                    chromosomeString += "(" + chromosome.Genes[i].X + "," + chromosome.Genes[i].Y + ")[" + chromosome.Genes[i].Orientation + "]<" + chromosome.Genes[i].Width + "x" + chromosome.Genes[i].Length + ">";
+                    chromosomeString += " | ";
+                }
+                dataRow[1] = chromosomeString;
+                dataTable.Rows.Add(dataRow);
+            }
+            dataGridViewPopulation.DataSource = dataTable;
+        }
+
         private void PerformGA()
         {
             GetMaterialSizeFromForm();
@@ -97,12 +120,20 @@ namespace CSP_WinApp
             parts = CreateRectangles(inputList);
 
             InitializePopulation();
-            for (int gen = 0; gen < GA.MAX_GENERATION; gen++)
+            for (int gen = 2; gen <= 2; gen++) //GA.MAX_GENERATION
             {
-                Population firstHalf = GA.GetFirstHalfPopulation(population, GA.ELITISM_SIZE);
-                Population secondHalf = GA.GetSecondHalfPopulation(population, GA.ELITISM_SIZE);
-                GA.Crossover(population, GA.GENE_SIZE);
-                GA.Mutation(population);
+                ShowPopulationInForm();
+                Population firstHalf = GA.GetFirstHalfPopulation(population, GA.ELITISM_SIZE); // VIPs (elites), do not touch
+                Population secondHalf = GA.GetSecondHalfPopulation(population, GA.ELITISM_SIZE); // others needs reproduction
+                GA.Crossover(secondHalf, GA.GENE_SIZE);
+                GA.Mutation(secondHalf);
+                population = GA.CombineFirstAndSecondPopulation(firstHalf, secondHalf);
+                foreach (var chromosome in population.Chromosomes)
+                {
+                    chromosome.CalculateFitness(materialWidth, materialLength);
+                }
+                population.SortByFitness();
+                GA.LAST_GENERATION = gen;
             }
         }
 
@@ -115,7 +146,9 @@ namespace CSP_WinApp
                 {
                     chromosome.AddGene(part.X, part.Y, part.Orientation, part.Width, part.Length);
                 }
+
                 GA.GENE_SIZE = chromosome.GetSize();
+
                 chromosome.RandomAllGenes(materialWidth, materialLength);
                 chromosome.CalculateFitness(materialWidth, materialLength);
                 population.AddChromosome(chromosome);

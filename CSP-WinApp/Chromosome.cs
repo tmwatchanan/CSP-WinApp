@@ -17,7 +17,7 @@ namespace CSP_WinApp
         public Chromosome()
         {
             this.Fitness = 0;
-            this.genes = new List<Gene>();
+            this.Genes = new List<Gene>();
         }
 
         public int GetSize()
@@ -27,7 +27,7 @@ namespace CSP_WinApp
 
         public void AddGene(int x, int y, int orientation, int width, int height)
         {
-            Gene gene = new Gene();
+            Gene gene = new Gene(x, y, orientation, width, height);
             Genes.Add(gene);
         }
 
