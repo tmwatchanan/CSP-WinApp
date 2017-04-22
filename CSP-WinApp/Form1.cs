@@ -12,9 +12,12 @@ namespace CSP_WinApp
 {
     public partial class Form1 : Form
     {
+        const int POPULATION_SIZE = 10;
+        int individualSize;
+
         List<Coordinate> inputList;
         List<Rectangle> parts;
-        List<Individual> population;
+        Population population;
 
         public Form1()
         {
@@ -24,9 +27,10 @@ namespace CSP_WinApp
 
         public void InitializeModel()
         {
+            individualSize = 0;
             inputList = new List<Coordinate>();
             parts = new List<Rectangle>();
-            population = new List<Individual>();
+            population = new Population();
         }
 
         private void buttonSubmit_Click(object sender, EventArgs e)
@@ -74,8 +78,9 @@ namespace CSP_WinApp
                 individual.Chromosome.Add(part.X);
                 individual.Chromosome.Add(part.Y);
                 individual.Chromosome.Add(part.Orientation);
-                population.Add(individual);
+                population.AddIndividual(individual);
             }
+            //individualSize = population.Count * 3;
         }
 
         //private int CalculateFitness(Rectangle rect1, Rectangle rect2)
