@@ -15,6 +15,9 @@ namespace CSP_WinApp
         const int POPULATION_SIZE = 10;
         int individualSize;
 
+        int materialWidth;
+        int materialLength;
+
         List<Coordinate> inputList;
         List<Rectangle> parts;
         Population population;
@@ -35,9 +38,27 @@ namespace CSP_WinApp
 
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
-            GetFromDataGridView();
-            parts = CreateRectangles(inputList);
-            InitializePopulation();
+            PerformGA();
+        }
+
+        private void GetMaterialSizeFromForm()
+        {
+            try
+            {
+                materialWidth = Convert.ToInt32(TextBoxMaterialWidth.Text);
+            }
+            catch (Exception)
+            {
+                materialWidth = 0;
+            }
+            try
+            {
+                materialLength = Convert.ToInt32(TextBoxMaterialLength.Text);
+            }
+            catch (Exception)
+            {
+                materialLength = 0;
+            }
         }
 
         private void GetFromDataGridView()
@@ -70,25 +91,36 @@ namespace CSP_WinApp
             return rectangles;
         }
 
+        private void PerformGA()
+        {
+            GetMaterialSizeFromForm();
+            GetFromDataGridView();
+            parts = CreateRectangles(inputList);
+
+            InitializePopulation();
+            GA.Crossover(population);
+        }
+
         private void InitializePopulation()
         {
+            labelPopulation.Text = "[GEN1]";
             foreach (var part in parts)
             {
                 Individual individual = new Individual();
-                individual.Chromosome.Add(part.X);
-                individual.Chromosome.Add(part.Y);
-                individual.Chromosome.Add(part.Orientation);
+                individual.X = part.X;
+                individual.Y = part.Y;
+                individual.Orientation = part.Orientation;
+                individual.Width = part.Width;
+                individual.Length = part.Length;
                 population.AddIndividual(individual);
             }
-            //individualSize = population.Count * 3;
+            population.RandomAllIndividuals(materialWidth, materialLength);
+            population.CalculateFitness(materialWidth, materialLength);
+            population.SortByFitness();
+            foreach (var individual in population.Individuals)
+            {
+                labelPopulation.Text += individual.X + "," + individual.Y + " | ";
+            }
         }
-
-        //private int CalculateFitness(Rectangle rect1, Rectangle rect2)
-        //{
-        //    System.Drawing.Rectangle drawRect1 = new System.Drawing.Rectangle(rect1.X, rect1.Y, rect1.Width, rect1.Length);
-        //    System.Drawing.Rectangle drawRect2 = new System.Drawing.Rectangle(rect2.X, rect2.Y, rect2.Width, rect2.Length);
-        //    System.Drawing.Rectangle intersectArea = System.Drawing.Rectangle.Intersect(drawRect1, drawRect2);
-        //    return intersectArea.Width * intersectArea.Height;
-        //}
     }
 }

@@ -31,12 +31,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.TextBoxMaterialWidth = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.TextBoxMaterialHeight = new System.Windows.Forms.TextBox();
+            this.TextBoxMaterialLength = new System.Windows.Forms.TextBox();
             this.buttonSubmit = new System.Windows.Forms.Button();
             this.dataGridViewParts = new System.Windows.Forms.DataGridView();
             this.PartWidth = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PartLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PartCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelPopulation = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewParts)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,12 +66,12 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Length";
             // 
-            // TextBoxMaterialHeight
+            // TextBoxMaterialLength
             // 
-            this.TextBoxMaterialHeight.Location = new System.Drawing.Point(171, 24);
-            this.TextBoxMaterialHeight.Name = "TextBoxMaterialHeight";
-            this.TextBoxMaterialHeight.Size = new System.Drawing.Size(46, 20);
-            this.TextBoxMaterialHeight.TabIndex = 3;
+            this.TextBoxMaterialLength.Location = new System.Drawing.Point(171, 24);
+            this.TextBoxMaterialLength.Name = "TextBoxMaterialLength";
+            this.TextBoxMaterialLength.Size = new System.Drawing.Size(46, 20);
+            this.TextBoxMaterialLength.TabIndex = 3;
             // 
             // buttonSubmit
             // 
@@ -111,14 +112,24 @@
             this.PartCount.HeaderText = "#Part";
             this.PartCount.Name = "PartCount";
             // 
+            // labelPopulation
+            // 
+            this.labelPopulation.AutoSize = true;
+            this.labelPopulation.Location = new System.Drawing.Point(12, 222);
+            this.labelPopulation.Name = "labelPopulation";
+            this.labelPopulation.Size = new System.Drawing.Size(56, 13);
+            this.labelPopulation.TabIndex = 6;
+            this.labelPopulation.Text = "population";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(376, 222);
+            this.ClientSize = new System.Drawing.Size(363, 297);
+            this.Controls.Add(this.labelPopulation);
             this.Controls.Add(this.dataGridViewParts);
             this.Controls.Add(this.buttonSubmit);
-            this.Controls.Add(this.TextBoxMaterialHeight);
+            this.Controls.Add(this.TextBoxMaterialLength);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.TextBoxMaterialWidth);
             this.Controls.Add(this.label1);
@@ -135,12 +146,13 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TextBoxMaterialWidth;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox TextBoxMaterialHeight;
+        private System.Windows.Forms.TextBox TextBoxMaterialLength;
         private System.Windows.Forms.Button buttonSubmit;
         private System.Windows.Forms.DataGridView dataGridViewParts;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartWidth;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartLength;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartCount;
+        private System.Windows.Forms.Label labelPopulation;
     }
 }
 
