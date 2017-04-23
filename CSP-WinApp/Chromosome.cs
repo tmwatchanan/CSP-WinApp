@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CSP_WinApp
 {
-    class Chromosome
+    public class Chromosome
     {
-        int fitness;
-        List<Gene> genes;
+        private int fitness;
+        private List<Gene> genes;
 
         public int Fitness { get; set; }
         public List<Gene> Genes { get; set; }

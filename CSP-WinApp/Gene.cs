@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSP_WinApp
 {
-    class Gene
+    public class Gene
     {
         int x;
         int y;

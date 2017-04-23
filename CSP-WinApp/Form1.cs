@@ -21,6 +21,8 @@ namespace CSP_WinApp
         List<Rectangle> parts;
         Population population;
 
+        DisplayForm displayForm;
+
         public Form1()
         {
             InitializeComponent();
@@ -35,14 +37,18 @@ namespace CSP_WinApp
             population = new Population();
         }
 
+        private void InitializeDisplayForm()
+        {
+            displayForm = new DisplayForm(materialWidth, materialLength);
+        }
+
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
             PerformGA();
-            DisplayForm displayForm = new DisplayForm();
-            displayForm.Width = (DisplayForm.SCALING_FACTOR * materialWidth) + DisplayForm.RESERVE_BORDER;
-            displayForm.Height = (DisplayForm.SCALING_FACTOR * materialLength) + DisplayForm.RESERVE_BORDER;
+            displayForm.Width = (DisplayForm.SCALING_FACTOR * materialWidth);// + DisplayForm.RESERVE_BORDER;
+            displayForm.Height = (DisplayForm.SCALING_FACTOR * materialLength);// + DisplayForm.RESERVE_BORDER;
             displayForm.Show();
-            displayForm.DrawMaterial((DisplayForm.SCALING_FACTOR * materialWidth), (DisplayForm.SCALING_FACTOR * materialLength));
+            //displayForm.DrawMaterial((DisplayForm.SCALING_FACTOR * materialWidth), (DisplayForm.SCALING_FACTOR * materialLength));
         }
 
         private void GetMaterialSizeFromForm()
@@ -122,9 +128,13 @@ namespace CSP_WinApp
         {
             GetMaterialSizeFromForm();
             GetFromDataGridView();
+            InitializeDisplayForm();
             parts = CreateRectangles(inputList);
 
             InitializePopulation();
+
+            displayForm.DrawParts(population, 0); // 0 for the best
+
             for (int gen = 2; gen <= 2; gen++) //GA.MAX_GENERATION
             {
                 ShowPopulationInForm();

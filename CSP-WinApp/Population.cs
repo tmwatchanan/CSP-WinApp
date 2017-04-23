@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSP_WinApp
 {
-    class Population
+    public class Population
     {
         private List<Chromosome> chromosomes;
 
