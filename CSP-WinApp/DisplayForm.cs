@@ -18,16 +18,16 @@ namespace CSP_WinApp
         public DisplayForm(int width, int height)
         {
             InitializeComponent();
-            InitializeSpace(width, height);
         }
 
         private void InitializeSpace(int width, int height)
         {
-            pictureBox1.Image = null;
+            pictureBox1.InitialImage = null;
+            //pictureBox1.Image = null;
             pictureBox1.Invalidate();
             Bitmap img = new Bitmap(SCALING_FACTOR * width, SCALING_FACTOR * height);
             pictureBox1.Image = img;
-            pictureBox1.Size = pictureBox1.Image.Size;
+            pictureBox1.Size = img.Size;
         }
 
         private Color RandomColor()
@@ -42,6 +42,7 @@ namespace CSP_WinApp
 
         public void DrawParts(Population population, int chromosomeIdx)
         {
+            InitializeSpace(Form1.materialWidth, Form1.materialLength);
             Chromosome chromosome = population.Chromosomes[chromosomeIdx];
             for (int g = 0; g < chromosome.Genes.Count; g++)
             {

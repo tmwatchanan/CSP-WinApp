@@ -49,6 +49,7 @@ namespace CSP_WinApp
             displayForm.Width = (DisplayForm.SCALING_FACTOR * materialWidth);// + DisplayForm.RESERVE_BORDER;
             displayForm.Height = (DisplayForm.SCALING_FACTOR * materialLength);// + DisplayForm.RESERVE_BORDER;
             displayForm.Show();
+            buttonSubmit.Enabled = false;
             //displayForm.DrawMaterial((DisplayForm.SCALING_FACTOR * materialWidth), (DisplayForm.SCALING_FACTOR * materialLength));
         }
 
@@ -148,12 +149,12 @@ namespace CSP_WinApp
             //Population secondHalf = GA.GetSecondHalfPopulation(population, GA.ELITISM_SIZE); // others needs reproduction
             Population offspringPopulation = GA.BinaryTournament(population);
             Population newPopulation = GA.CombineFirstAndSecondPopulation(population, offspringPopulation);
+            newPopulation.ResetFitness();
             newPopulation.CalculateFitnessOfAllChromosomes();
-            population.SortByFitness();
-            population.CutInHalf();
+            newPopulation.SortByFitness();
+            newPopulation.CutInHalf();
+            population = newPopulation;
             ShowPopulationInForm();
-            InitializeDisplayForm();
-            displayForm.DrawParts(population, 0); // 0 for the best
         }
 
         private void InitializePopulation()
@@ -178,6 +179,11 @@ namespace CSP_WinApp
         private void buttonNextGen_Click(object sender, EventArgs e)
         {
             GAEvolve();
+            displayForm.DrawParts(population, 0); // 0 for the best
+            if (GA.LAST_GENERATION > GA.MAX_GENERATION)
+            {
+                buttonNextGen.Enabled = false;
+            }
         }
     }
 }

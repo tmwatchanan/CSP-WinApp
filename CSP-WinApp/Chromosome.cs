@@ -35,14 +35,14 @@ namespace CSP_WinApp
         {
             System.Drawing.Rectangle rightBound = new System.Drawing.Rectangle(Form1.materialWidth, 0, Form1.materialLongest * 2, Form1.materialLongest * 2);
             System.Drawing.Rectangle bottomBound = new System.Drawing.Rectangle(0, Form1.materialLength, Form1.materialLongest * 2, Form1.materialLongest * 2);
-            System.Drawing.Rectangle intersectArea;
             foreach (var gene in Genes)
             {
+                System.Drawing.Rectangle intersectArea;
                 System.Drawing.Rectangle geneRect = new System.Drawing.Rectangle(gene.X, gene.Y, gene.Width, gene.Length);
                 intersectArea = System.Drawing.Rectangle.Intersect(geneRect, rightBound);
-                this.Fitness += intersectArea.Width * intersectArea.Height;
+                this.Fitness += intersectArea.Width * intersectArea.Height * 2;
                 intersectArea = System.Drawing.Rectangle.Intersect(geneRect, bottomBound);
-                this.Fitness += intersectArea.Width * intersectArea.Height;
+                this.Fitness += intersectArea.Width * intersectArea.Height * 2;
             }
         }
 
