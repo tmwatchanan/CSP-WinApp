@@ -16,6 +16,7 @@ namespace CSP_WinApp
 
         public static int materialWidth;
         public static int materialLength;
+        public static int materialLongest;
 
         List<Coordinate> inputList;
         List<Rectangle> parts;
@@ -69,8 +70,8 @@ namespace CSP_WinApp
             {
                 materialLength = 0;
             }
-            int maxSide = Math.Max(materialWidth, materialLength);
-            string binary = Convert.ToString(maxSide, 2);
+            materialLongest = Math.Max(materialWidth, materialLength);
+            string binary = Convert.ToString(materialLongest, 2);
             GA.BINARY_SIZE = binary.Length;
         }
 

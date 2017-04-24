@@ -31,13 +31,18 @@ namespace CSP_WinApp
             Genes.Add(gene);
         }
 
-        public void CalculateItsFitness(int width, int length)
+        public void CalculateFitnessOutOfBound()
         {
+            System.Drawing.Rectangle rightBound = new System.Drawing.Rectangle(Form1.materialWidth, 0, Form1.materialLongest * 2, Form1.materialLongest * 2);
+            System.Drawing.Rectangle bottomBound = new System.Drawing.Rectangle(0, Form1.materialLength, Form1.materialLongest * 2, Form1.materialLongest * 2);
+            System.Drawing.Rectangle intersectArea;
             foreach (var gene in Genes)
             {
-                int boundPoint = gene.X + gene.Width + gene.Length;
-                Boolean outOfBound = (boundPoint > width | boundPoint > length);
-                this.Fitness += (outOfBound ? 1200 : 0);
+                System.Drawing.Rectangle geneRect = new System.Drawing.Rectangle(gene.X, gene.Y, gene.Width, gene.Length);
+                intersectArea = System.Drawing.Rectangle.Intersect(geneRect, rightBound);
+                this.Fitness += intersectArea.Width * intersectArea.Height;
+                intersectArea = System.Drawing.Rectangle.Intersect(geneRect, bottomBound);
+                this.Fitness += intersectArea.Width * intersectArea.Height;
             }
         }
 
@@ -59,7 +64,7 @@ namespace CSP_WinApp
 
         public void CalculateFitness(int width, int length)
         {
-            CalculateItsFitness(width, length);
+            CalculateFitnessOutOfBound();
             CalculateFitnessWithOther();
         }
 
