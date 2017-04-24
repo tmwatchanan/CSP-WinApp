@@ -38,6 +38,7 @@
             this.PartLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PartCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewPopulation = new System.Windows.Forms.DataGridView();
+            this.buttonNextGen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewParts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPopulation)).BeginInit();
             this.SuspendLayout();
@@ -123,11 +124,22 @@
             this.dataGridViewPopulation.Size = new System.Drawing.Size(514, 294);
             this.dataGridViewPopulation.TabIndex = 6;
             // 
+            // buttonNextGen
+            // 
+            this.buttonNextGen.Location = new System.Drawing.Point(452, 183);
+            this.buttonNextGen.Name = "buttonNextGen";
+            this.buttonNextGen.Size = new System.Drawing.Size(75, 23);
+            this.buttonNextGen.TabIndex = 7;
+            this.buttonNextGen.Text = "NextGen";
+            this.buttonNextGen.UseVisualStyleBackColor = true;
+            this.buttonNextGen.Click += new System.EventHandler(this.buttonNextGen_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(563, 519);
+            this.Controls.Add(this.buttonNextGen);
             this.Controls.Add(this.dataGridViewPopulation);
             this.Controls.Add(this.dataGridViewParts);
             this.Controls.Add(this.buttonSubmit);
@@ -156,6 +168,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn PartLength;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartCount;
         private System.Windows.Forms.DataGridView dataGridViewPopulation;
+        private System.Windows.Forms.Button buttonNextGen;
     }
 }
 

@@ -18,31 +18,26 @@ namespace CSP_WinApp
         public DisplayForm(int width, int height)
         {
             InitializeComponent();
+            InitializeSpace(width, height);
+        }
 
+        private void InitializeSpace(int width, int height)
+        {
+            pictureBox1.Image = null;
+            pictureBox1.Invalidate();
             Bitmap img = new Bitmap(SCALING_FACTOR * width, SCALING_FACTOR * height);
             pictureBox1.Image = img;
             pictureBox1.Size = pictureBox1.Image.Size;
         }
 
-        //public void DrawMaterial(int width, int height)
-        //{
-        //    System.Drawing.Graphics graphics = this.CreateGraphics();
-        //    SolidBrush blackBrush = new SolidBrush(Color.Black);
-        //    //System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(RESERVE_BORDER / 2, RESERVE_BORDER / 2, width, height);
-        //    System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(0, 0, width, height);
-        //    //graphics.DrawRectangle(System.Drawing.Pens.Red, rectangle);
-        //    graphics.FillRectangle(blackBrush, rectangle);
-        //    blackBrush.Dispose();
-        //    graphics.Dispose();
-        //}
-
-        private SolidBrush RandomBrushColor()
+        private Color RandomColor()
         {
             Random r = new Random(Guid.NewGuid().GetHashCode());
             int red = r.Next(0, byte.MaxValue + 1);
             int green = r.Next(0, byte.MaxValue + 1);
             int blue = r.Next(0, byte.MaxValue + 1);
-            return new System.Drawing.SolidBrush(Color.FromArgb(red, green, blue));
+            Color randomColor = Color.FromArgb(red, green, blue);
+            return randomColor;
         }
 
         public void DrawParts(Population population, int chromosomeIdx)
@@ -51,11 +46,7 @@ namespace CSP_WinApp
             for (int g = 0; g < chromosome.Genes.Count; g++)
             {
                 Gene gene = chromosome.Genes[g];
-                Random r = new Random(Guid.NewGuid().GetHashCode());
-                int red = r.Next(0, byte.MaxValue + 1);
-                int green = r.Next(0, byte.MaxValue + 1);
-                int blue = r.Next(0, byte.MaxValue + 1);
-                Color color = Color.FromArgb(red, green, blue);
+                Color color = RandomColor();
                 using (var graphic = Graphics.FromImage(pictureBox1.Image))
                 using (Font font1 = new Font("Arial", 7, FontStyle.Bold, GraphicsUnit.Point)) // dynamic font size: ((int)(SCALING_FACTOR * gene.Width / 5)), but still not perfectly works
                 {
@@ -69,13 +60,6 @@ namespace CSP_WinApp
                     graphic.DrawString(rectangleString, font1, new SolidBrush(Color.White), partRectangle);
                     pictureBox1.Refresh();
                 }
-                //brush = RandomBrushColor();
-                //System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(DisplayForm.SCALING_FACTOR * gene.X, DisplayForm.SCALING_FACTOR * gene.Y, DisplayForm.SCALING_FACTOR * gene.Width, DisplayForm.SCALING_FACTOR * gene.Length);
-                //graphics.FillRectangle(brush, rectangle);
-                //using (Font font1 = new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Point))
-                //{
-                //    graphics.DrawString(Convert.ToString(g), font1, Brushes.OrangeRed, rectangle);
-                //}
             }
         }
     }

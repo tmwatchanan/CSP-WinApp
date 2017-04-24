@@ -14,8 +14,8 @@ namespace CSP_WinApp
     {
         int individualSize;
 
-        int materialWidth;
-        int materialLength;
+        public static int materialWidth;
+        public static int materialLength;
 
         List<Coordinate> inputList;
         List<Rectangle> parts;
@@ -69,6 +69,9 @@ namespace CSP_WinApp
             {
                 materialLength = 0;
             }
+            int maxSide = Math.Max(materialWidth, materialLength);
+            string binary = Convert.ToString(maxSide, 2);
+            GA.BINARY_SIZE = binary.Length;
         }
 
         private void GetFromDataGridView()
@@ -86,7 +89,7 @@ namespace CSP_WinApp
                 //}
             }
         }
-        
+
         public static List<Rectangle> CreateRectangles(List<Coordinate> coordinates)
         {
             List<Rectangle> rectangles = new List<Rectangle>();
@@ -131,25 +134,25 @@ namespace CSP_WinApp
             InitializeDisplayForm();
             parts = CreateRectangles(inputList);
 
+            ShowPopulationInForm();
             InitializePopulation();
-
             displayForm.DrawParts(population, 0); // 0 for the best
+        }
 
-            for (int gen = 2; gen <= 2; gen++) //GA.MAX_GENERATION
-            {
-                ShowPopulationInForm();
-                Population firstHalf = GA.GetFirstHalfPopulation(population, GA.ELITISM_SIZE); // VIPs (elites), do not touch
-                Population secondHalf = GA.GetSecondHalfPopulation(population, GA.ELITISM_SIZE); // others needs reproduction
-                GA.Crossover(secondHalf, GA.GENE_SIZE);
-                GA.Mutation(secondHalf);
-                population = GA.CombineFirstAndSecondPopulation(firstHalf, secondHalf);
-                foreach (var chromosome in population.Chromosomes)
-                {
-                    chromosome.CalculateFitness(materialWidth, materialLength);
-                }
-                population.SortByFitness();
-                GA.LAST_GENERATION = gen;
-            }
+        private void GAEvolve()
+        {
+            GA.LAST_GENERATION += 1;
+            population.ResetFitness();
+            //Population firstHalf = GA.GetFirstHalfPopulation(population, GA.ELITISM_SIZE); // VIPs (elites), do not touch
+            //Population secondHalf = GA.GetSecondHalfPopulation(population, GA.ELITISM_SIZE); // others needs reproduction
+            Population offspringPopulation = GA.BinaryTournament(population);
+            Population newPopulation = GA.CombineFirstAndSecondPopulation(population, offspringPopulation);
+            newPopulation.CalculateFitnessOfAllChromosomes();
+            population.SortByFitness();
+            population.CutInHalf();
+            ShowPopulationInForm();
+            InitializeDisplayForm();
+            displayForm.DrawParts(population, 0); // 0 for the best
         }
 
         private void InitializePopulation()
@@ -165,10 +168,15 @@ namespace CSP_WinApp
                 GA.GENE_SIZE = chromosome.GetSize();
 
                 chromosome.RandomAllGenes(materialWidth, materialLength);
-                chromosome.CalculateFitness(materialWidth, materialLength);
                 population.AddChromosome(chromosome);
             }
+            population.CalculateFitnessOfAllChromosomes();
             population.SortByFitness();
+        }
+
+        private void buttonNextGen_Click(object sender, EventArgs e)
+        {
+            GAEvolve();
         }
     }
 }

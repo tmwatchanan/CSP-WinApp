@@ -37,7 +37,7 @@ namespace CSP_WinApp
             {
                 int boundPoint = gene.X + gene.Width + gene.Length;
                 Boolean outOfBound = (boundPoint > width | boundPoint > length);
-                this.Fitness += (outOfBound ? 123456789 : 0);
+                this.Fitness += (outOfBound ? 1200 : 0);
             }
         }
 

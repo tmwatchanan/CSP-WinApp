@@ -17,6 +17,14 @@ namespace CSP_WinApp
             Chromosomes = new List<Chromosome>();
         }
 
+        public void CalculateFitnessOfAllChromosomes()
+        {
+            foreach (var chromosome in this.Chromosomes)
+            {
+                chromosome.CalculateFitness(Form1.materialWidth, Form1.materialLength);
+            }
+        }
+
         public void SortByFitness()
         {
             this.Chromosomes = this.Chromosomes.OrderBy(o => o.Fitness).ToList(); // From min to max
@@ -30,6 +38,19 @@ namespace CSP_WinApp
         public int GetSize()
         {
             return Chromosomes.Count;
+        }
+
+        public void ResetFitness()
+        {
+            foreach (var chromosome in this.Chromosomes)
+            {
+                chromosome.Fitness = 0;
+            }
+        }
+
+        public void CutInHalf()
+        {
+            this.Chromosomes.Take(this.GetSize() / 2);
         }
     }
 }
