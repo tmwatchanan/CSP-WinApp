@@ -41,8 +41,8 @@ namespace CSP_WinApp
                 foreach (Chromosome cms in offspringChromosomeList)
                 {
                     // Mutate before adding
-                    //Chromosome mutatedCms = Mutation(cms);
-                    parentPopulation.AddChromosome(cms);
+                    Chromosome mutatedCms = Mutation(cms);
+                    parentPopulation.AddChromosome(mutatedCms);
                 }
             }
 
@@ -74,15 +74,16 @@ namespace CSP_WinApp
         public static Chromosome Mutation(Chromosome chromosome)
         {
             int geneCount = GA.GENE_SIZE;
+            string materialLongestBinary = Convert.ToString(Form1.materialLongest, 2);
+            int binaryLength = materialLongestBinary.Length;
             for (int g = 0; g < geneCount; g++)
             {
                 Gene gene = chromosome.Genes[g];
-
-                string x = Encode(gene.X, Form1.materialLongest);
+                Random rand = new Random(Guid.NewGuid().GetHashCode());
+                string x = Encode(gene.X, binaryLength);
                 StringBuilder xStrBuilder = new StringBuilder(x);
                 for (int k = 0; k < x.Length; k++)
                 {
-                    Random rand = new Random(Guid.NewGuid().GetHashCode());
                     int percent = rand.Next(0, 100);
                     if (percent <= GA.MUTATION_RATE)
                     {
@@ -91,11 +92,10 @@ namespace CSP_WinApp
                 }
                 chromosome.Genes[g].X = Convert.ToInt32(xStrBuilder.ToString(), 2);
 
-                string y = Encode(gene.Y, Form1.materialLongest);
+                string y = Encode(gene.Y, binaryLength);
                 StringBuilder yStrBuilder = new StringBuilder(y);
                 for (int k = 0; k < y.Length; k++)
                 {
-                    Random rand = new Random(Guid.NewGuid().GetHashCode());
                     int percent = rand.Next(0, 100);
                     if (percent <= GA.MUTATION_RATE)
                     {
@@ -104,17 +104,15 @@ namespace CSP_WinApp
                 }
                 chromosome.Genes[g].Y = Convert.ToInt32(yStrBuilder.ToString(), 2);
 
-                string orientation = Convert.ToString(gene.Orientation, 2);
-                StringBuilder oStrBuilder = new StringBuilder(orientation);
+                int orientation = gene.Orientation;
                 {
-                    Random rand = new Random(Guid.NewGuid().GetHashCode());
                     int percent = rand.Next(0, 100);
                     if (percent <= GA.MUTATION_RATE)
                     {
-                        oStrBuilder[0] = (oStrBuilder[0] == '0' ? '1' : '0');
+                        orientation = (orientation == 0 ? 1 : 0);
                     }
                 }
-                chromosome.Genes[g].Orientation = Convert.ToInt32(oStrBuilder.ToString(), 2);
+                chromosome.Genes[g].Orientation = orientation;
             }
             return chromosome;
         }

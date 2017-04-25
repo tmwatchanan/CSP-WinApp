@@ -23,7 +23,7 @@ namespace CSP_WinApp
         private void InitializeSpace(int width, int height)
         {
             pictureBox1.InitialImage = null;
-            //pictureBox1.Image = null;
+            pictureBox1.Image = null;
             pictureBox1.Invalidate();
             Bitmap img = new Bitmap(SCALING_FACTOR * width, SCALING_FACTOR * height);
             pictureBox1.Image = img;
@@ -51,13 +51,26 @@ namespace CSP_WinApp
                 using (var graphic = Graphics.FromImage(pictureBox1.Image))
                 using (Font font1 = new Font("Arial", 7, FontStyle.Bold, GraphicsUnit.Point)) // dynamic font size: ((int)(SCALING_FACTOR * gene.Width / 5)), but still not perfectly works
                 {
-                    System.Drawing.Rectangle partRectangle = new System.Drawing.Rectangle(SCALING_FACTOR * gene.X, SCALING_FACTOR * gene.Y, SCALING_FACTOR * gene.Width, SCALING_FACTOR * gene.Length);
+                    int plotSizeX = SCALING_FACTOR;
+                    int plotSizeY = SCALING_FACTOR;
+                    if (gene.Orientation == 0)
+                    {
+                        plotSizeX *= gene.Width;
+                        plotSizeY *= gene.Length;
+                    }
+                    else
+                    {
+                        plotSizeX *= gene.Length;
+                        plotSizeY *= gene.Width;
+                    }
+                    System.Drawing.Rectangle partRectangle = new System.Drawing.Rectangle(SCALING_FACTOR * gene.X, SCALING_FACTOR * gene.Y, plotSizeX, plotSizeY);
                     graphic.DrawRectangle(new Pen(color), partRectangle);
                     graphic.FillRectangle(new SolidBrush(color), partRectangle);
                     string rectangleString = "Chromosome#" + chromosomeIdx;
                     rectangleString += "\n" + " Gene@" + Convert.ToString(g);
                     rectangleString += "\n" + "origin: (" + gene.X + "," + gene.Y + ")";
                     rectangleString += "\n" + "size: [" + gene.Width + "," + gene.Length + "]";
+                    rectangleString += "\n" + "flip: " + gene.Orientation;
                     graphic.DrawString(rectangleString, font1, new SolidBrush(Color.White), partRectangle);
                     pictureBox1.Refresh();
                 }
