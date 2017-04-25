@@ -136,25 +136,22 @@ namespace CSP_WinApp
             InitializeDisplayForm();
             parts = CreateRectangles(inputList);
 
-            ShowPopulationInForm();
             InitializePopulation();
+            ShowPopulationInForm();
             displayForm.DrawParts(population, 0); // 0 for the best
         }
 
         private void GAEvolve()
         {
             GA.LAST_GENERATION += 1;
-            population.ResetFitness();
             //Population firstHalf = GA.GetFirstHalfPopulation(population, GA.ELITISM_SIZE); // VIPs (elites), do not touch
             //Population secondHalf = GA.GetSecondHalfPopulation(population, GA.ELITISM_SIZE); // others needs reproduction
             Population offspringPopulation = GA.BinaryTournament(population);
             Population newPopulation = GA.CombineFirstAndSecondPopulation(population, offspringPopulation);
-            newPopulation.ResetFitness();
             newPopulation.CalculateFitnessOfAllChromosomes();
             newPopulation.SortByFitness();
             newPopulation.CutInHalf();
             population = newPopulation;
-            ShowPopulationInForm();
         }
 
         private void InitializePopulation()
@@ -179,6 +176,7 @@ namespace CSP_WinApp
         private void buttonNextGen_Click(object sender, EventArgs e)
         {
             GAEvolve();
+            ShowPopulationInForm();
             displayForm.DrawParts(population, 0); // 0 for the best
             if (GA.LAST_GENERATION > GA.MAX_GENERATION)
             {

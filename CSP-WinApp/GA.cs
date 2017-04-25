@@ -41,8 +41,8 @@ namespace CSP_WinApp
                 foreach (Chromosome cms in offspringChromosomeList)
                 {
                     // Mutate before adding
-                    Chromosome mutatedCms = Mutation(cms);
-                    parentPopulation.AddChromosome(mutatedCms);
+                    //Chromosome mutatedCms = Mutation(cms);
+                    parentPopulation.AddChromosome(cms);
                 }
             }
 
@@ -51,58 +51,24 @@ namespace CSP_WinApp
 
         public static List<Chromosome> Crossover(List<Chromosome> chromosomes)
         {
-            Chromosome chromosome1 = chromosomes[0];
-            Chromosome chromosome2 = chromosomes[1];
-            int geneCount = GA.GENE_SIZE;
-            for (int g = 0; g < geneCount; g++)
+            List<Chromosome> crossoverChromosomes = new List<Chromosome>();
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            int crossPosition = rand.Next(GA.GENE_SIZE - 1);
+            Chromosome chromosome1 = new Chromosome();
+            Chromosome chromosome2 = new Chromosome();
+            for (int i = 0; i < crossPosition; i++)
             {
-                Gene gene1 = chromosome1.Genes[g];
-                Gene gene2 = chromosome2.Genes[g];
-                for (int attr = 0; attr <= 1; attr++)
-                {
-                    string binary1 = "";
-                    string binary2 = "";
-                    if (attr == 0) // X
-                    {
-                        binary1 = Encode(gene1.X, GA.BINARY_SIZE);
-                        binary2 = Encode(gene2.X, GA.BINARY_SIZE);
-                    }
-                    else if (attr == 1) // Y
-                    {
-                        binary1 = Encode(gene1.Y, GA.BINARY_SIZE);
-                        binary2 = Encode(gene2.Y, GA.BINARY_SIZE);
-                    }
-                    //else if (attr == 2) // Orientation
-                    //{
-                    //    binary1 = Encode(gene1.Orientation, binaryLength);
-                    //    binary2 = Encode(gene2.Orientation, binaryLength);
-                    //}
-                    Random rand = new Random(Guid.NewGuid().GetHashCode());
-                    int crossPosition = rand.Next(GA.BINARY_SIZE);
-                    string firstHalf = binary1.Substring(crossPosition, binary1.Length - crossPosition);
-                    string secondHalf = binary2.Substring(crossPosition, binary2.Length - crossPosition);
-                    binary1 = binary1.Substring(0, crossPosition) + secondHalf;
-                    binary2 = binary2.Substring(0, crossPosition) + firstHalf;
-                    if (attr == 0) // X
-                    {
-                        gene1.X = Convert.ToInt32(binary1, 2);
-                        gene2.X = Convert.ToInt32(binary2, 2);
-                    }
-                    else if (attr == 1) // Y
-                    {
-                        gene1.Y = Convert.ToInt32(binary1, 2);
-                        gene2.Y = Convert.ToInt32(binary2, 2);
-                    }
-                    //else if (attr == 2) // Orientation
-                    //{
-                    //    chromosome1.Genes[g].Orientation = Convert.ToInt32(binary1, 2);
-                    //    chromosome2.Genes[g].Orientation = Convert.ToInt32(binary2, 2);
-                    //}
-                    chromosomes[0].Genes[g] = gene1;
-                    chromosomes[1].Genes[g] = gene2;
-                }
+                chromosome1.AddGene(chromosomes[0].Genes[i]);
+                chromosome2.AddGene(chromosomes[1].Genes[i]);
             }
-            return chromosomes;
+            for (int i = crossPosition; i < GA.GENE_SIZE; i++)
+            {
+                chromosome1.AddGene(chromosomes[1].Genes[i]);
+                chromosome2.AddGene(chromosomes[0].Genes[i]);
+            }
+            crossoverChromosomes.Add(chromosome1);
+            crossoverChromosomes.Add(chromosome2);
+            return crossoverChromosomes;
         }
 
         public static Chromosome Mutation(Chromosome chromosome)
@@ -112,7 +78,7 @@ namespace CSP_WinApp
             {
                 Gene gene = chromosome.Genes[g];
 
-                string x = Convert.ToString(gene.X, 2);
+                string x = Encode(gene.X, Form1.materialLongest);
                 StringBuilder xStrBuilder = new StringBuilder(x);
                 for (int k = 0; k < x.Length; k++)
                 {
@@ -125,7 +91,7 @@ namespace CSP_WinApp
                 }
                 chromosome.Genes[g].X = Convert.ToInt32(xStrBuilder.ToString(), 2);
 
-                string y = Convert.ToString(gene.Y, 2);
+                string y = Encode(gene.Y, Form1.materialLongest);
                 StringBuilder yStrBuilder = new StringBuilder(y);
                 for (int k = 0; k < y.Length; k++)
                 {
@@ -153,54 +119,6 @@ namespace CSP_WinApp
             return chromosome;
         }
 
-        //public static void Mutation(Population population)
-        //{
-        //    for (int i = 0; i < population.GetSize(); i++)
-        //    {
-        //        for (int g = 0; g < GA.GENE_SIZE; g++)
-        //        {
-        //            Gene gene = population.Chromosomes[i].Genes[g];
-
-        //            string x = Convert.ToString(gene.X, 2);
-        //            StringBuilder xStrBuilder = new StringBuilder(x);
-        //            for (int k = 0; k < x.Length; k++)
-        //            {
-        //                Random rand = new Random(Guid.NewGuid().GetHashCode());
-        //                int percent = rand.Next(0, 100);
-        //                if (percent <= GA.MUTATION_RATE)
-        //                {
-        //                    xStrBuilder[k] = (xStrBuilder[k] == '0' ? '1' : '0');
-        //                }
-        //            }
-        //            population.Chromosomes[i].Genes[g].X = Convert.ToInt32(xStrBuilder.ToString(), 2);
-
-        //            string y = Convert.ToString(gene.Y, 2);
-        //            StringBuilder yStrBuilder = new StringBuilder(y);
-        //            for (int k = 0; k < y.Length; k++)
-        //            {
-        //                Random rand = new Random(Guid.NewGuid().GetHashCode());
-        //                int percent = rand.Next(0, 100);
-        //                if (percent <= GA.MUTATION_RATE)
-        //                {
-        //                    yStrBuilder[k] = (yStrBuilder[k] == '0' ? '1' : '0');
-        //                }
-        //            }
-        //            population.Chromosomes[i].Genes[g].Y = Convert.ToInt32(yStrBuilder.ToString(), 2);
-
-        //            string orientation = Convert.ToString(gene.Orientation, 2);
-        //            StringBuilder oStrBuilder = new StringBuilder(orientation);
-        //            {
-        //                Random rand = new Random(Guid.NewGuid().GetHashCode());
-        //                int percent = rand.Next(0, 100);
-        //                if (percent <= GA.MUTATION_RATE)
-        //                {
-        //                    oStrBuilder[0] = (oStrBuilder[0] == '0' ? '1' : '0');
-        //                }
-        //            }
-        //            population.Chromosomes[i].Genes[g].Orientation = Convert.ToInt32(oStrBuilder.ToString(), 2);
-        //        }
-        //    }
-        //}
         public static Population GetFirstHalfPopulation(Population population, int half = -99)
         {
             if (half == -99) half = (int)(population.Chromosomes.Count / 2);

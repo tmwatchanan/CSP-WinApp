@@ -19,6 +19,7 @@ namespace CSP_WinApp
 
         public void CalculateFitnessOfAllChromosomes()
         {
+            this.ResetFitness();
             foreach (var chromosome in this.Chromosomes)
             {
                 chromosome.CalculateFitness(Form1.materialWidth, Form1.materialLength);
@@ -42,9 +43,9 @@ namespace CSP_WinApp
 
         public void ResetFitness()
         {
-            foreach (var chromosome in this.Chromosomes)
+            for (int c = 0; c < this.Chromosomes.Count; c++)
             {
-                chromosome.Fitness = 0;
+                this.Chromosomes[c].Fitness = 0;
             }
         }
 
