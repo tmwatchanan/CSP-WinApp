@@ -19,15 +19,28 @@ namespace CSP_WinApp
 
         public Population(Population prototypePopulation)
         {
-            Chromosomes = prototypePopulation.Chromosomes;
+            Chromosomes = new List<Chromosome>();
+            foreach (var cms in prototypePopulation.Chromosomes)
+            {
+                Chromosomes.Add(new Chromosome(cms));
+            }
+            //Chromosomes = prototypePopulation.Chromosomes;
         }
 
+        //public void CalculateFitnessOfAllChromosomes()
+        //{
+        //    //this.ResetFitness();
+        //    foreach (var chromosome in this.Chromosomes)
+        //    {
+        //        chromosome.CalculateFitness(Form1.materialWidth, Form1.materialLength);
+        //    }
+        //}
         public void CalculateFitnessOfAllChromosomes()
         {
-            //this.ResetFitness();
-            foreach (var chromosome in this.Chromosomes)
+            this.ResetFitness();
+            for (int i = 0; i < Chromosomes.Count; i++)
             {
-                chromosome.CalculateFitness(Form1.materialWidth, Form1.materialLength);
+                Chromosomes[i].CalculateFitness(Form1.materialWidth, Form1.materialLength);
             }
         }
         

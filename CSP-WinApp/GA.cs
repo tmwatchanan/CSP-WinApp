@@ -18,7 +18,7 @@ namespace CSP_WinApp
         public static int LAST_GENERATION = 0;
         public static int MIN_FITNESS = Int32.MaxValue;
         public static int STOP_GENERATION = 0;
-        public static int STILL_SAME_MAX = 10;
+        public static int STILL_SAME_MAX = 20;
         public static int StillMinCount = 0;
 
         public static string Encode(int value, int len)
@@ -38,16 +38,16 @@ namespace CSP_WinApp
                 List<Chromosome> offspringChromosomeList = new List<Chromosome>();
                 foreach (int rnd in random)
                 {
-                    offspringChromosomeList.Add(population.Chromosomes[rnd]);
+                    offspringChromosomeList.Add(new Chromosome(population.Chromosomes[rnd]));
                 }
                 // Crossover
-                offspringChromosomeList = Crossover(offspringChromosomeList);
-                foreach (Chromosome cms in offspringChromosomeList)
+                List<Chromosome> xoverChromosomeList = Crossover(offspringChromosomeList);
+                foreach (Chromosome cms in xoverChromosomeList)
                 {
                     // Mutate before adding
-                    //Chromosome mutatedCms = Mutation(cms);
-                    //offspringPopulation.AddChromosome(mutatedCms);
-                    offspringPopulation.AddChromosome(cms);
+                    Chromosome mutatedCms = Mutation(cms);
+                    offspringPopulation.AddChromosome(mutatedCms);
+                    //offspringPopulation.AddChromosome(cms);
                 }
             }
             offspringPopulation.ResetFitness();

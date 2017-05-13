@@ -160,6 +160,8 @@ namespace CSP_WinApp
             //newPopulation.CutInHalf();
             //population.Chromosomes = newPopulation.Chromosomes.Take(newPopulation.Chromosomes.Count / 2).ToList();
             population = new Population(newPopulation.GetFirstHalfPopulation());
+            population.CalculateFitnessOfAllChromosomes();
+            population.SortByFitness();
             //population = newPopulation;
             if (population.FindMinFitness() < GA.MIN_FITNESS)
             {
@@ -170,10 +172,10 @@ namespace CSP_WinApp
             {
                 ++GA.StillMinCount;
             }
-            else
-            {
-                GA.StillMinCount = 0;
-            }
+            //else
+            //{
+            //    GA.StillMinCount = 0;
+            //}
             labelGenerationNumber.Text = Convert.ToString(GA.LAST_GENERATION);
         }
 

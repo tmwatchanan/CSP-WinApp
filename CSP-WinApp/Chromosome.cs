@@ -20,6 +20,16 @@ namespace CSP_WinApp
             this.Genes = new List<Gene>();
         }
 
+        public Chromosome(Chromosome chromosome)
+        {
+            this.Fitness = 0;
+            this.Genes = new List<Gene>();
+            foreach (var gene in chromosome.Genes)
+            {
+                this.Genes.Add(new Gene(gene));
+            }
+        }
+
         public int GetSize()
         {
             return Genes.Count;
@@ -43,7 +53,15 @@ namespace CSP_WinApp
             foreach (var gene in Genes)
             {
                 System.Drawing.Rectangle intersectArea;
-                System.Drawing.Rectangle geneRect = new System.Drawing.Rectangle(gene.X, gene.Y, gene.Width, gene.Length);
+                System.Drawing.Rectangle geneRect;
+                if (gene.Orientation == 0)
+                {
+                    geneRect = new System.Drawing.Rectangle(gene.X, gene.Y, gene.Width, gene.Length);
+                }
+                else
+                { 
+                    geneRect = new System.Drawing.Rectangle(gene.X, gene.Y, gene.Length, gene.Width);
+                }
                 intersectArea = System.Drawing.Rectangle.Intersect(geneRect, rightBound);
                 this.Fitness += intersectArea.Width * intersectArea.Height * 2;
                 intersectArea = System.Drawing.Rectangle.Intersect(geneRect, bottomBound);
@@ -56,13 +74,30 @@ namespace CSP_WinApp
             for (int i = 0; i < Genes.Count; i++)
             {
                 Gene firstGene = Genes[i];
-                System.Drawing.Rectangle drawRect1 = new System.Drawing.Rectangle(firstGene.X, firstGene.Y, firstGene.Width, firstGene.Length);
+                System.Drawing.Rectangle drawRect1;
+                if (firstGene.Orientation == 0)
+                {
+                    drawRect1 = new System.Drawing.Rectangle(firstGene.X, firstGene.Y, firstGene.Width, firstGene.Length);
+                }
+                else
+                {
+                    drawRect1 = new System.Drawing.Rectangle(firstGene.X, firstGene.Y, firstGene.Length, firstGene.Width);
+
+                }
                 for (int j = 0; j < Genes.Count; j++)
                 {
                     if (j != i)
                     {
                         Gene secondGene = Genes[j];
-                        System.Drawing.Rectangle drawRect2 = new System.Drawing.Rectangle(secondGene.X, secondGene.Y, secondGene.Width, secondGene.Length);
+                        System.Drawing.Rectangle drawRect2;
+                        if (secondGene.Orientation == 0)
+                        {
+                            drawRect2 = new System.Drawing.Rectangle(secondGene.X, secondGene.Y, secondGene.Width, secondGene.Length);
+                        }
+                        else
+                        {
+                            drawRect2 = new System.Drawing.Rectangle(secondGene.X, secondGene.Y, secondGene.Length, secondGene.Width);
+                        }
                         System.Drawing.Rectangle intersectArea = System.Drawing.Rectangle.Intersect(drawRect1, drawRect2);
                         this.Fitness += intersectArea.Width * intersectArea.Height;
                     }
@@ -72,7 +107,7 @@ namespace CSP_WinApp
 
         public void CalculateFitness(int width, int length)
         {
-            this.Fitness = 0;
+            //this.Fitness = 0;
             CalculateFitnessOutOfBound();
             CalculateFitnessWithOther();
         }

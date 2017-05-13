@@ -37,5 +37,14 @@ namespace CSP_WinApp
             this.Width = width;
             this.Length = length;
         }
+
+        public Gene(Gene prototypeGene)
+        {
+            this.X = prototypeGene.X;
+            this.Y = prototypeGene.Y;
+            this.Orientation = prototypeGene.Orientation;
+            this.Width = prototypeGene.Width;
+            this.Length = prototypeGene.Length;
+        }
     }
 }
