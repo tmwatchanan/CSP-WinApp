@@ -9,7 +9,7 @@ namespace CSP_WinApp
     static class GA
     {
         public const int MAX_GENERATION = 3000;
-        public const int POPULATION_SIZE = 30;
+        public const int POPULATION_SIZE = 150;
         //public const double ELITISM_RATE = 0.3; // % of population size
         //public const int ELITISM_SIZE = (int)(ELITISM_RATE * POPULATION_SIZE);
         public const int MUTATION_RATE = 2; // 2% from 100%

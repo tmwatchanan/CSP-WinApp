@@ -14,10 +14,16 @@ namespace CSP_WinApp
     {
         public const int SCALING_FACTOR = 10;
         public const int RESERVE_BORDER = 50;
+        private List<Color> colorList;
 
-        public DisplayForm(int width, int height)
+        public DisplayForm(int width, int height, int geneSize)
         {
             InitializeComponent();
+            colorList = new List<Color>();
+            for (int i = 0; i < geneSize; i++)
+            {
+                colorList.Add(RandomColor());
+            }
         }
 
         private void InitializeSpace(int width, int height)
@@ -47,7 +53,7 @@ namespace CSP_WinApp
             for (int g = 0; g < chromosome.Genes.Count; g++)
             {
                 Gene gene = chromosome.Genes[g];
-                Color color = RandomColor();
+                //Color color = RandomColor();
                 using (var graphic = Graphics.FromImage(pictureBox1.Image))
                 using (Font font1 = new Font("Arial", 7, FontStyle.Bold, GraphicsUnit.Point)) // dynamic font size: ((int)(SCALING_FACTOR * gene.Width / 5)), but still not perfectly works
                 {
@@ -64,8 +70,8 @@ namespace CSP_WinApp
                         plotSizeY *= gene.Width;
                     }
                     System.Drawing.Rectangle partRectangle = new System.Drawing.Rectangle(SCALING_FACTOR * gene.X, SCALING_FACTOR * gene.Y, plotSizeX, plotSizeY);
-                    graphic.DrawRectangle(new Pen(color), partRectangle);
-                    graphic.FillRectangle(new SolidBrush(color), partRectangle);
+                    graphic.DrawRectangle(new Pen(colorList[g]), partRectangle);
+                    graphic.FillRectangle(new SolidBrush(colorList[g]), partRectangle);
                     string rectangleString = "GEN#" + GA.LAST_GENERATION;
                     rectangleString += "\n" + "Chromosome#" + chromosomeIdx;
                     rectangleString += "\n" + " Gene@" + Convert.ToString(g);

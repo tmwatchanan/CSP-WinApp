@@ -125,6 +125,7 @@
             this.dataGridViewPopulation.Name = "dataGridViewPopulation";
             this.dataGridViewPopulation.Size = new System.Drawing.Size(538, 294);
             this.dataGridViewPopulation.TabIndex = 6;
+            this.dataGridViewPopulation.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPopulation_CellClick);
             // 
             // buttonNextGen
             // 

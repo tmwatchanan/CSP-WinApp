@@ -26,6 +26,8 @@ namespace CSP_WinApp
         {
             InitializeComponent();
             InitializeModel();
+            buttonNextGen.Enabled = false;
+            buttonAuto.Enabled = false;
         }
 
         public void InitializeModel()
@@ -38,16 +40,18 @@ namespace CSP_WinApp
 
         private void InitializeDisplayForm()
         {
-            displayForm = new DisplayForm(materialWidth, materialLength);
+            displayForm = new DisplayForm(materialWidth, materialLength, GA.GENE_SIZE);
         }
 
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
             PerformGA();
-            displayForm.Width = (DisplayForm.SCALING_FACTOR * materialWidth);// + DisplayForm.RESERVE_BORDER;
-            displayForm.Height = (DisplayForm.SCALING_FACTOR * materialLength);// + DisplayForm.RESERVE_BORDER;
+            displayForm.Width = (DisplayForm.SCALING_FACTOR * materialWidth + 16);// + DisplayForm.RESERVE_BORDER;
+            displayForm.Height = (DisplayForm.SCALING_FACTOR * materialLength + 38);// + DisplayForm.RESERVE_BORDER;
             displayForm.Show();
             buttonSubmit.Enabled = false;
+            buttonNextGen.Enabled = true;
+            buttonAuto.Enabled = true;
             //displayForm.DrawMaterial((DisplayForm.SCALING_FACTOR * materialWidth), (DisplayForm.SCALING_FACTOR * materialLength));
         }
 
@@ -135,10 +139,10 @@ namespace CSP_WinApp
         {
             GetMaterialSizeFromForm();
             GetFromDataGridView();
-            InitializeDisplayForm();
             parts = CreateRectangles(inputList);
 
             InitializePopulation();
+            InitializeDisplayForm();
             labelGenerationNumber.Text = Convert.ToString(GA.LAST_GENERATION);
             ShowPopulationInForm();
             displayForm.DrawParts(population, 0); // 0 for the best
@@ -227,6 +231,19 @@ namespace CSP_WinApp
             ShowPopulationInForm();
             displayForm.DrawParts(population, 0); // 0 for the best
             buttonAuto.Enabled = false;
+        }
+
+        private void dataGridViewPopulation_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex == -1) return; //check if row index is not selected
+            //if (dataGridViewPopulation.CurrentCell.ColumnIndex.Equals(3))
+            {
+                //if (dataGridViewPopulation.CurrentCell != null && dataGridViewPopulation.CurrentCell.Value != null)
+                if (e.RowIndex < population.Chromosomes.Count)
+                {
+                    displayForm.DrawParts(population, e.RowIndex);
+                }
+            }
         }
     }
 }
