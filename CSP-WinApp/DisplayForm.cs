@@ -66,7 +66,8 @@ namespace CSP_WinApp
                     System.Drawing.Rectangle partRectangle = new System.Drawing.Rectangle(SCALING_FACTOR * gene.X, SCALING_FACTOR * gene.Y, plotSizeX, plotSizeY);
                     graphic.DrawRectangle(new Pen(color), partRectangle);
                     graphic.FillRectangle(new SolidBrush(color), partRectangle);
-                    string rectangleString = "Chromosome#" + chromosomeIdx;
+                    string rectangleString = "GEN#" + GA.LAST_GENERATION;
+                    rectangleString += "\n" + "Chromosome#" + chromosomeIdx;
                     rectangleString += "\n" + " Gene@" + Convert.ToString(g);
                     rectangleString += "\n" + "origin: (" + gene.X + "," + gene.Y + ")";
                     rectangleString += "\n" + "size: [" + gene.Width + "," + gene.Length + "]";

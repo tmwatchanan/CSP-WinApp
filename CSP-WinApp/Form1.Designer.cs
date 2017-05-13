@@ -39,6 +39,8 @@
             this.PartCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewPopulation = new System.Windows.Forms.DataGridView();
             this.buttonNextGen = new System.Windows.Forms.Button();
+            this.buttonAuto = new System.Windows.Forms.Button();
+            this.labelGenerationNumber = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewParts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPopulation)).BeginInit();
             this.SuspendLayout();
@@ -121,12 +123,12 @@
             this.dataGridViewPopulation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPopulation.Location = new System.Drawing.Point(13, 213);
             this.dataGridViewPopulation.Name = "dataGridViewPopulation";
-            this.dataGridViewPopulation.Size = new System.Drawing.Size(514, 294);
+            this.dataGridViewPopulation.Size = new System.Drawing.Size(538, 294);
             this.dataGridViewPopulation.TabIndex = 6;
             // 
             // buttonNextGen
             // 
-            this.buttonNextGen.Location = new System.Drawing.Point(452, 183);
+            this.buttonNextGen.Location = new System.Drawing.Point(373, 183);
             this.buttonNextGen.Name = "buttonNextGen";
             this.buttonNextGen.Size = new System.Drawing.Size(75, 23);
             this.buttonNextGen.TabIndex = 7;
@@ -134,11 +136,34 @@
             this.buttonNextGen.UseVisualStyleBackColor = true;
             this.buttonNextGen.Click += new System.EventHandler(this.buttonNextGen_Click);
             // 
+            // buttonAuto
+            // 
+            this.buttonAuto.Location = new System.Drawing.Point(476, 183);
+            this.buttonAuto.Name = "buttonAuto";
+            this.buttonAuto.Size = new System.Drawing.Size(75, 23);
+            this.buttonAuto.TabIndex = 8;
+            this.buttonAuto.Text = "Auto";
+            this.buttonAuto.UseVisualStyleBackColor = true;
+            this.buttonAuto.Click += new System.EventHandler(this.buttonAuto_Click);
+            // 
+            // labelGenerationNumber
+            // 
+            this.labelGenerationNumber.AutoSize = true;
+            this.labelGenerationNumber.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.labelGenerationNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.labelGenerationNumber.Location = new System.Drawing.Point(420, 87);
+            this.labelGenerationNumber.Name = "labelGenerationNumber";
+            this.labelGenerationNumber.Size = new System.Drawing.Size(74, 31);
+            this.labelGenerationNumber.TabIndex = 9;
+            this.labelGenerationNumber.Text = "####";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(563, 519);
+            this.Controls.Add(this.labelGenerationNumber);
+            this.Controls.Add(this.buttonAuto);
             this.Controls.Add(this.buttonNextGen);
             this.Controls.Add(this.dataGridViewPopulation);
             this.Controls.Add(this.dataGridViewParts);
@@ -169,6 +194,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn PartCount;
         private System.Windows.Forms.DataGridView dataGridViewPopulation;
         private System.Windows.Forms.Button buttonNextGen;
+        private System.Windows.Forms.Button buttonAuto;
+        private System.Windows.Forms.Label labelGenerationNumber;
     }
 }
 

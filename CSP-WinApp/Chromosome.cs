@@ -57,18 +57,22 @@ namespace CSP_WinApp
             {
                 Gene firstGene = Genes[i];
                 System.Drawing.Rectangle drawRect1 = new System.Drawing.Rectangle(firstGene.X, firstGene.Y, firstGene.Width, firstGene.Length);
-                for (int j = i; j < Genes.Count; j++)
+                for (int j = 0; j < Genes.Count; j++)
                 {
-                    Gene secondGene = Genes[j];
-                    System.Drawing.Rectangle drawRect2 = new System.Drawing.Rectangle(secondGene.X, secondGene.Y, secondGene.Width, secondGene.Length);
-                    System.Drawing.Rectangle intersectArea = System.Drawing.Rectangle.Intersect(drawRect1, drawRect2);
-                    this.Fitness += intersectArea.Width * intersectArea.Height;
+                    if (j != i)
+                    {
+                        Gene secondGene = Genes[j];
+                        System.Drawing.Rectangle drawRect2 = new System.Drawing.Rectangle(secondGene.X, secondGene.Y, secondGene.Width, secondGene.Length);
+                        System.Drawing.Rectangle intersectArea = System.Drawing.Rectangle.Intersect(drawRect1, drawRect2);
+                        this.Fitness += intersectArea.Width * intersectArea.Height;
+                    }
                 }
             }
         }
 
         public void CalculateFitness(int width, int length)
         {
+            this.Fitness = 0;
             CalculateFitnessOutOfBound();
             CalculateFitnessWithOther();
         }

@@ -12,10 +12,14 @@ namespace CSP_WinApp
         public const int POPULATION_SIZE = 100;
         //public const double ELITISM_RATE = 0.3; // % of population size
         //public const int ELITISM_SIZE = (int)(ELITISM_RATE * POPULATION_SIZE);
-        public const int MUTATION_RATE = 10; // 10% from 100%
+        public const int MUTATION_RATE = 2; // 2% from 100%
         public static int GENE_SIZE = 0;
         public static int BINARY_SIZE = 0;
-        public static int LAST_GENERATION = 1;
+        public static int LAST_GENERATION = 0;
+        public static int MIN_FITNESS = Int32.MaxValue;
+        public static int STOP_GENERATION = 0;
+        public static int STILL_SAME_MAX = 10;
+        public static int StillMinCount = 0;
 
         public static string Encode(int value, int len)
         {
@@ -25,7 +29,7 @@ namespace CSP_WinApp
 
         public static Population BinaryTournament(Population population)
         {
-            Population parentPopulation = new Population();
+            Population offspringPopulation = new Population();
             int chromosomeCount = population.Chromosomes.Count;
             for (int c = 0; c < (chromosomeCount / 2); c++)
             {
@@ -41,31 +45,71 @@ namespace CSP_WinApp
                 foreach (Chromosome cms in offspringChromosomeList)
                 {
                     // Mutate before adding
-                    Chromosome mutatedCms = Mutation(cms);
-                    parentPopulation.AddChromosome(mutatedCms);
+                    //Chromosome mutatedCms = Mutation(cms);
+                    //offspringPopulation.AddChromosome(mutatedCms);
+                    offspringPopulation.AddChromosome(cms);
                 }
             }
-
-            return parentPopulation;
+            offspringPopulation.ResetFitness();
+            return offspringPopulation;
         }
 
         public static List<Chromosome> Crossover(List<Chromosome> chromosomes)
         {
+            Chromosome chromosome1 = chromosomes[0];
+            Chromosome chromosome2 = chromosomes[1];
+            int longest = Form1.materialLongest;
+            string materialLongestBinary = Convert.ToString(Form1.materialLongest, 2);
+            int binaryLength = materialLongestBinary.Length;
+            for (int g = 0; g < GA.GENE_SIZE; g++)
+            {
+                Gene gene1 = chromosome1.Genes[g];
+                Gene gene2 = chromosome2.Genes[g];
+                Random rand = new Random(Guid.NewGuid().GetHashCode());
+                int crossPosition = rand.Next(1, binaryLength - 1);
+                string x1 = Encode(gene1.X, binaryLength);
+                string x2 = Encode(gene2.X, binaryLength);
+                string xNew1 = "";
+                string xNew2 = "";
+                for (int k = 0; k < binaryLength; k++)
+                {
+                    if (k < crossPosition)
+                    {
+                        xNew1 += x1[k];
+                        xNew2 += x2[k];
+                    }
+                    else
+                    {
+                        xNew1 += x2[k];
+                        xNew2 += x1[k];
+                    }
+                }
+                chromosome1.Genes[g].X = Convert.ToInt32(xNew1, 2);
+                chromosome2.Genes[g].X = Convert.ToInt32(xNew2, 2);
+
+                rand = new Random(Guid.NewGuid().GetHashCode());
+                crossPosition = rand.Next(0, binaryLength - 1);
+                string y1 = Encode(gene1.Y, binaryLength);
+                string y2 = Encode(gene2.Y, binaryLength);
+                string yNew1 = "";
+                string yNew2 = "";
+                for (int k = 0; k < binaryLength; k++)
+                {
+                    if (k < crossPosition)
+                    {
+                        yNew1 += y1[k];
+                        yNew2 += y2[k];
+                    }
+                    else
+                    {
+                        yNew1 += y2[k];
+                        yNew2 += y1[k];
+                    }
+                }
+                chromosome1.Genes[g].Y = Convert.ToInt32(yNew1, 2);
+                chromosome2.Genes[g].Y = Convert.ToInt32(yNew2, 2);
+            }
             List<Chromosome> crossoverChromosomes = new List<Chromosome>();
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            int crossPosition = rand.Next(GA.GENE_SIZE - 1);
-            Chromosome chromosome1 = new Chromosome();
-            Chromosome chromosome2 = new Chromosome();
-            for (int i = 0; i < crossPosition; i++)
-            {
-                chromosome1.AddGene(chromosomes[0].Genes[i]);
-                chromosome2.AddGene(chromosomes[1].Genes[i]);
-            }
-            for (int i = crossPosition; i < GA.GENE_SIZE; i++)
-            {
-                chromosome1.AddGene(chromosomes[1].Genes[i]);
-                chromosome2.AddGene(chromosomes[0].Genes[i]);
-            }
             crossoverChromosomes.Add(chromosome1);
             crossoverChromosomes.Add(chromosome2);
             return crossoverChromosomes;
@@ -74,6 +118,7 @@ namespace CSP_WinApp
         public static Chromosome Mutation(Chromosome chromosome)
         {
             int geneCount = GA.GENE_SIZE;
+            int longest = Form1.materialLongest;
             string materialLongestBinary = Convert.ToString(Form1.materialLongest, 2);
             int binaryLength = materialLongestBinary.Length;
             for (int g = 0; g < geneCount; g++)
@@ -82,7 +127,7 @@ namespace CSP_WinApp
                 Random rand = new Random(Guid.NewGuid().GetHashCode());
                 string x = Encode(gene.X, binaryLength);
                 StringBuilder xStrBuilder = new StringBuilder(x);
-                for (int k = 0; k < x.Length; k++)
+                for (int k = 0; k < xStrBuilder.Length; k++)
                 {
                     int percent = rand.Next(0, 100);
                     if (percent <= GA.MUTATION_RATE)
@@ -94,7 +139,7 @@ namespace CSP_WinApp
 
                 string y = Encode(gene.Y, binaryLength);
                 StringBuilder yStrBuilder = new StringBuilder(y);
-                for (int k = 0; k < y.Length; k++)
+                for (int k = 0; k < yStrBuilder.Length; k++)
                 {
                     int percent = rand.Next(0, 100);
                     if (percent <= GA.MUTATION_RATE)
@@ -117,36 +162,22 @@ namespace CSP_WinApp
             return chromosome;
         }
 
-        public static Population GetFirstHalfPopulation(Population population, int half = -99)
-        {
-            if (half == -99) half = (int)(population.Chromosomes.Count / 2);
-            Population firstHalf = new Population();
-            for (int i = 0; i < half; i++)
-            {
-                firstHalf.AddChromosome(population.Chromosomes[i]);
-            }
-            return firstHalf;
-        }
-        public static Population GetSecondHalfPopulation(Population population, int half = -99)
-        {
-            int popSize = population.Chromosomes.Count;
-            if (half == -99) half = (int)(popSize / 2);
-            Population secondHalf = new Population();
-            for (int i = half; i < popSize; i++)
-            {
-                secondHalf.AddChromosome(population.Chromosomes[i]);
-            }
-            return secondHalf;
-        }
-
         public static Population CombineFirstAndSecondPopulation(Population firstHalf, Population secondHalf)
         {
-            Population population = firstHalf;
-            foreach (var chromosome in secondHalf.Chromosomes)
+            Population combinedPopulation = new Population();
+            for (int i = 0; i < firstHalf.Chromosomes.Count; i++)
             {
-                population.AddChromosome(chromosome);
+                combinedPopulation.AddChromosome(firstHalf.Chromosomes[i]);
             }
-            return population;
+            for (int j = 0; j < secondHalf.Chromosomes.Count; j++)
+            {
+                combinedPopulation.AddChromosome(secondHalf.Chromosomes[j]);
+            }
+            for (int k = 0; k < combinedPopulation.Chromosomes.Count; k++)
+            {
+                combinedPopulation.Chromosomes[k].Fitness = 0;
+            }
+            return combinedPopulation;
         }
     }
 }

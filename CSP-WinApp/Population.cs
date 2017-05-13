@@ -17,18 +17,23 @@ namespace CSP_WinApp
             Chromosomes = new List<Chromosome>();
         }
 
+        public Population(Population prototypePopulation)
+        {
+            Chromosomes = prototypePopulation.Chromosomes;
+        }
+
         public void CalculateFitnessOfAllChromosomes()
         {
-            this.ResetFitness();
+            //this.ResetFitness();
             foreach (var chromosome in this.Chromosomes)
             {
                 chromosome.CalculateFitness(Form1.materialWidth, Form1.materialLength);
             }
         }
-
+        
         public void SortByFitness()
         {
-            this.Chromosomes = this.Chromosomes.OrderBy(o => o.Fitness).ToList(); // From min to max
+            this.Chromosomes = this.Chromosomes.OrderBy(x => x.Fitness).ToList();
         }
 
         public void AddChromosome(Chromosome individual)
@@ -51,7 +56,34 @@ namespace CSP_WinApp
 
         public void CutInHalf()
         {
-            this.Chromosomes.Take(this.GetSize() / 2);
+            this.Chromosomes.RemoveRange(this.Chromosomes.Count / 2, Chromosomes.Count);
+        }
+
+        public int FindMinFitness()
+        {
+            return this.Chromosomes.Min(x => x.Fitness);
+        }
+
+        public Population GetFirstHalfPopulation(int half = -99)
+        {
+            if (half == -99) half = (int)(Chromosomes.Count / 2);
+            Population firstHalf = new Population();
+            for (int i = 0; i < half; i++)
+            {
+                firstHalf.AddChromosome(Chromosomes[i]);
+            }
+            return firstHalf;
+        }
+        public Population GetSecondHalfPopulation(int half = -99)
+        {
+            int popSize = Chromosomes.Count;
+            if (half == -99) half = (int)(popSize / 2);
+            Population secondHalf = new Population();
+            for (int i = half; i < popSize; i++)
+            {
+                secondHalf.AddChromosome(Chromosomes[i]);
+            }
+            return secondHalf;
         }
     }
 }

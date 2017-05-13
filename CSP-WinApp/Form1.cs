@@ -12,8 +12,6 @@ namespace CSP_WinApp
 {
     public partial class Form1 : Form
     {
-        int individualSize;
-
         public static int materialWidth;
         public static int materialLength;
         public static int materialLongest;
@@ -32,10 +30,10 @@ namespace CSP_WinApp
 
         public void InitializeModel()
         {
-            individualSize = 0;
             inputList = new List<Coordinate>();
             parts = new List<Rectangle>();
             population = new Population();
+            labelGenerationNumber.Text = "0";
         }
 
         private void InitializeDisplayForm()
@@ -108,6 +106,10 @@ namespace CSP_WinApp
 
         private void ShowPopulationInForm()
         {
+            dataGridViewPopulation.DataSource = null;
+            dataGridViewPopulation.Rows.Clear();
+
+            dataGridViewPopulation.Refresh();
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("GEN#");
             dataTable.Columns.Add("Chromosome");
@@ -137,6 +139,7 @@ namespace CSP_WinApp
             parts = CreateRectangles(inputList);
 
             InitializePopulation();
+            labelGenerationNumber.Text = Convert.ToString(GA.LAST_GENERATION);
             ShowPopulationInForm();
             displayForm.DrawParts(population, 0); // 0 for the best
         }
@@ -146,12 +149,32 @@ namespace CSP_WinApp
             GA.LAST_GENERATION += 1;
             //Population firstHalf = GA.GetFirstHalfPopulation(population, GA.ELITISM_SIZE); // VIPs (elites), do not touch
             //Population secondHalf = GA.GetSecondHalfPopulation(population, GA.ELITISM_SIZE); // others needs reproduction
-            Population offspringPopulation = GA.BinaryTournament(population);
-            Population newPopulation = GA.CombineFirstAndSecondPopulation(population, offspringPopulation);
+            Population parentPopulation = new Population(population);
+            Population offspringPopulation = GA.BinaryTournament(parentPopulation);
+            //Population newPopulation = new Population();
+            Population combinedPopulation = GA.CombineFirstAndSecondPopulation(parentPopulation, offspringPopulation);
+            //newPopulation.Chromosomes = combinedPopulation.Chromosomes;
+            Population newPopulation = new Population(combinedPopulation);
             newPopulation.CalculateFitnessOfAllChromosomes();
             newPopulation.SortByFitness();
-            newPopulation.CutInHalf();
-            population = newPopulation;
+            //newPopulation.CutInHalf();
+            //population.Chromosomes = newPopulation.Chromosomes.Take(newPopulation.Chromosomes.Count / 2).ToList();
+            population = new Population(newPopulation.GetFirstHalfPopulation());
+            //population = newPopulation;
+            if (population.FindMinFitness() < GA.MIN_FITNESS)
+            {
+                GA.MIN_FITNESS = population.FindMinFitness();
+                GA.StillMinCount = 0;
+            }
+            else if (population.FindMinFitness() == GA.MIN_FITNESS)
+            {
+                ++GA.StillMinCount;
+            }
+            else
+            {
+                GA.StillMinCount = 0;
+            }
+            labelGenerationNumber.Text = Convert.ToString(GA.LAST_GENERATION);
         }
 
         private void InitializePopulation()
@@ -182,6 +205,17 @@ namespace CSP_WinApp
             {
                 buttonNextGen.Enabled = false;
             }
+        }
+
+        private void buttonAuto_Click(object sender, EventArgs e)
+        {
+            for (int i = GA.LAST_GENERATION; GA.StillMinCount >= GA.STILL_SAME_MAX || i <= GA.MAX_GENERATION; i++)
+            {
+                GAEvolve();
+            }
+            ShowPopulationInForm();
+            displayForm.DrawParts(population, 0); // 0 for the best
+            buttonAuto.Enabled = false;
         }
     }
 }
