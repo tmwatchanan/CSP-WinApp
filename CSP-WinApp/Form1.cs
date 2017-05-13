@@ -211,8 +211,17 @@ namespace CSP_WinApp
 
         private void buttonAuto_Click(object sender, EventArgs e)
         {
-            for (int i = GA.LAST_GENERATION; GA.StillMinCount >= GA.STILL_SAME_MAX || i <= GA.MAX_GENERATION; i++)
+            //while (true)
+            //{
+            //    if (population.Chromosomes[0].Fitness == 0) break;
+            //    GAEvolve();
+            //}
+            for (int i = GA.LAST_GENERATION; i <= GA.MAX_GENERATION; i++)
             {
+                if (population.Chromosomes[0].Fitness == 0)
+                {
+                    break;
+                }
                 GAEvolve();
             }
             ShowPopulationInForm();

@@ -48,8 +48,8 @@ namespace CSP_WinApp
 
         public void CalculateFitnessOutOfBound()
         {
-            System.Drawing.Rectangle rightBound = new System.Drawing.Rectangle(Form1.materialWidth + 1, 0, Form1.materialLongest * 2, Form1.materialLongest * 2);
-            System.Drawing.Rectangle bottomBound = new System.Drawing.Rectangle(0, Form1.materialLength + 1, Form1.materialLongest * 2, Form1.materialLongest * 2);
+            System.Drawing.Rectangle rightBound = new System.Drawing.Rectangle(Form1.materialWidth, 0, Form1.materialLongest * 2, Form1.materialLongest * 2);
+            System.Drawing.Rectangle bottomBound = new System.Drawing.Rectangle(0, Form1.materialLength, Form1.materialLongest * 2, Form1.materialLongest * 2);
             foreach (var gene in Genes)
             {
                 System.Drawing.Rectangle intersectArea;

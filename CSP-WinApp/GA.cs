@@ -8,8 +8,8 @@ namespace CSP_WinApp
 {
     static class GA
     {
-        public const int MAX_GENERATION = 1000;
-        public const int POPULATION_SIZE = 100;
+        public const int MAX_GENERATION = 3000;
+        public const int POPULATION_SIZE = 30;
         //public const double ELITISM_RATE = 0.3; // % of population size
         //public const int ELITISM_SIZE = (int)(ELITISM_RATE * POPULATION_SIZE);
         public const int MUTATION_RATE = 2; // 2% from 100%
@@ -18,7 +18,7 @@ namespace CSP_WinApp
         public static int LAST_GENERATION = 0;
         public static int MIN_FITNESS = Int32.MaxValue;
         public static int STOP_GENERATION = 0;
-        public static int STILL_SAME_MAX = 20;
+        public static int STILL_SAME_MAX = 100;
         public static int StillMinCount = 0;
 
         public static string Encode(int value, int len)
